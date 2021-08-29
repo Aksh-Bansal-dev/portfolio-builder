@@ -1,12 +1,16 @@
 import express from "express";
 import cors from "cors";
 import "reflect-metadata";
+import fileUpload from "express-fileupload";
 import { createConnection } from "typeorm";
 
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
 createConnection()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .then(async (_connection) => {
     // Middleware
     const app = express();
@@ -16,9 +20,10 @@ createConnection()
       })
     );
     app.use(express.json());
+    app.use(fileUpload());
 
     // Routes
-
+    app.use("/user", userRoutes);
     app.use("/auth", authRoutes);
 
     const port = process.env.PORT ? process.env.PORT : 5000;

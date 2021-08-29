@@ -3,6 +3,7 @@ import { User } from "../entity/User";
 import { compare, hash } from "bcryptjs";
 import { getAccessToken } from "../utils/tokenStuff";
 import { getRepository } from "typeorm";
+import authValidation from "../middleware/authValidation";
 
 const router = Router();
 
@@ -43,10 +44,77 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// Update
+router.post("/update", authValidation, async (req: Request, res: Response) => {
+  try {
+    const user = getRepository(User);
+    const {
+      username,
+      email,
+      website_name,
+      about,
+      education,
+      projects,
+      info,
+      linkedin_profile,
+      github_profile,
+      codechef_profile,
+      codeforces_profile,
+    } = req.body;
+
+    let profile_image: Buffer | undefined;
+    if (req.files && req.files.profile_image) {
+      // @ts-ignore
+      profile_image = req.files!.profile_image.data;
+    }
+
+    const existingUser = await user.findOne({ email: email });
+    if (!existingUser) {
+      res.json({ done: false, err: "Invalid Email" });
+      return;
+    }
+
+    const newUser = {
+      id: existingUser.id,
+      username: username ? username : existingUser.username,
+      password: existingUser.username,
+      email: email ? email : existingUser.email,
+      website_name: website_name ? website_name : existingUser.website_name,
+      about: about ? about : existingUser.about,
+      profile_image: profile_image ? profile_image : existingUser.profile_image,
+      education: education ? education : existingUser.education,
+      projects: projects ? projects : existingUser.projects,
+      info: info ? info : existingUser.info,
+      linkedin_profile: linkedin_profile
+        ? linkedin_profile
+        : existingUser.linkedin_profile,
+      github_profile: github_profile
+        ? github_profile
+        : existingUser.github_profile,
+      codechef_profile: codechef_profile
+        ? codechef_profile
+        : existingUser.codechef_profile,
+      codeforces_profile: codeforces_profile
+        ? codeforces_profile
+        : existingUser.codeforces_profile,
+    };
+
+    user.save(newUser);
+    res.status(200).json({ done: "true" });
+  } catch (err) {
+    console.log("my error: " + err);
+    res.json({ done: false, error: err });
+  }
+});
+
 // Register
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const user = getRepository(User);
+    // const educationRepo = getRepository(Education);
+    // const infoRepo = getRepository(MyInfo);
+    // const projectRepo = getRepository(Project);
+
     const {
       username,
       email,
@@ -61,6 +129,13 @@ router.post("/register", async (req: Request, res: Response) => {
       codechef_profile,
       codeforces_profile,
     } = req.body;
+
+    let profile_image: Buffer | undefined;
+    if (req.files && req.files.profile_image) {
+      // @ts-ignore
+      profile_image = req.files!.profile_image.data;
+    }
+
     if (!username || !email || !password) {
       res.json({ done: false, err: "Invalid Input" });
       return;
@@ -79,20 +154,21 @@ router.post("/register", async (req: Request, res: Response) => {
       password: hashedPassword,
       website_name,
       about,
+      profile_image,
       education,
-      projects,
       info,
+      projects,
       linkedin_profile,
       github_profile,
       codechef_profile,
       codeforces_profile,
     };
 
-    user.save(newUser);
+    await user.save(newUser);
     res.status(200).json({ done: "true" });
   } catch (err) {
     console.log("my error: " + err);
-    res.json({ done: false, error: err });
+    res.json({ done: false, error: "Something went wrong" });
   }
 });
 

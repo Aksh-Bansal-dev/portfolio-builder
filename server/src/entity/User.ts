@@ -36,18 +36,18 @@ export class User {
     nullable: true,
     type: "bytea",
   })
-  profile_image: Buffer;
+  profile_image: Buffer | undefined;
 
   @Column()
   about: string;
 
-  @OneToMany(() => Education, (education) => education.user)
+  @OneToMany(() => Education, (education) => education.user, { cascade: true })
   education: Education[];
 
-  @OneToMany(() => Project, (project) => project.user)
+  @OneToMany(() => Project, (project) => project.user, { cascade: true })
   projects: Project[];
 
-  @OneToMany(() => MyInfo, (info) => info.user)
+  @OneToMany(() => MyInfo, (info) => info.user, { cascade: true })
   info: MyInfo[];
 
   @Column({

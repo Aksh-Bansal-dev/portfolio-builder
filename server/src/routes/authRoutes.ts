@@ -4,6 +4,9 @@ import { compare, hash } from "bcryptjs";
 import { getAccessToken } from "../utils/tokenStuff";
 import { getRepository } from "typeorm";
 import authValidation from "../middleware/authValidation";
+import path from "path";
+import { v4 as uuid } from "uuid";
+import fs from "fs";
 
 const router = Router();
 
@@ -62,10 +65,25 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
       codeforces_profile,
     } = req.body;
 
-    let profile_image: Buffer | undefined;
+    let profile_image: string | undefined;
     if (req.files && req.files.profile_image) {
+      const location = path.join(process.cwd(), "images");
       // @ts-ignore
-      profile_image = req.files!.profile_image.data;
+      const extension = req.files.profile_image.name.split(".").pop();
+      const imageId = uuid();
+      profile_image = `/images/${imageId}.${extension}`;
+      fs.writeFile(
+        path.join(location, imageId),
+        // @ts-ignore
+        req.files!.profile_image.data,
+        (err) => {
+          if (err) {
+            console.log(err);
+            return res.json({ done: false, err: "Not able to upload image" });
+          }
+          return;
+        }
+      );
     }
 
     const existingUser = await user.findOne({ email: email });
@@ -116,9 +134,6 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const user = getRepository(User);
-    // const educationRepo = getRepository(Education);
-    // const infoRepo = getRepository(MyInfo);
-    // const projectRepo = getRepository(Project);
 
     const {
       username,
@@ -135,10 +150,25 @@ router.post("/register", async (req: Request, res: Response) => {
       codeforces_profile,
     } = req.body;
 
-    let profile_image: Buffer | undefined;
+    let profile_image: string | undefined;
     if (req.files && req.files.profile_image) {
+      const location = path.join(process.cwd(), "images");
       // @ts-ignore
-      profile_image = req.files!.profile_image.data;
+      const extension = req.files.profile_image.name.split(".").pop();
+      const imageId = uuid();
+      profile_image = `/images/${imageId}.${extension}`;
+      fs.writeFile(
+        path.join(location, imageId),
+        // @ts-ignore
+        req.files!.profile_image.data,
+        (err) => {
+          if (err) {
+            console.log(err);
+            return res.json({ done: false, err: "Not able to upload image" });
+          }
+          return;
+        }
+      );
     }
 
     if (!username || !email || !password) {

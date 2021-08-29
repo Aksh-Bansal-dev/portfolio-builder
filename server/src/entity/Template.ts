@@ -15,10 +15,9 @@ export class Template {
   template_name: string;
 
   @Column({
-    type: "bytea",
     nullable: true,
   })
-  display_picture: Buffer;
+  display_picture: string;
 
   @OneToMany(() => User, (user) => user.template, { cascade: true })
   users: User[];

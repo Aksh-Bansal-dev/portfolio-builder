@@ -16,10 +16,9 @@ export class Project {
   description: string;
 
   @Column({
-    type: "bytea",
     nullable: true,
   })
-  display_picture: Buffer;
+  display_picture: string;
 
   @ManyToOne(() => User, (user) => user.projects)
   user: User;

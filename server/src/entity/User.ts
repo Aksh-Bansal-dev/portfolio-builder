@@ -34,9 +34,8 @@ export class User {
 
   @Column({
     nullable: true,
-    type: "bytea",
   })
-  profile_image: Buffer | undefined;
+  profile_image: string;
 
   @Column()
   about: string;

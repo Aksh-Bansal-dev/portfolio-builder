@@ -23,6 +23,9 @@ createConnection()
     app.use(express.json());
     app.use(fileUpload());
 
+    // Serve static images
+    app.use("/images", express.static("images"));
+
     // Serving static ejs
     app.set("view engine", "ejs");
     app.use("/web", webRoutes);

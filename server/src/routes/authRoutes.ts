@@ -26,7 +26,7 @@ router.post("/login", async (req: Request, res: Response) => {
     const isValid = await compare(password, correctPass!);
 
     if (!isValid) {
-      // Todo: correct this to incorrect input or something
+      // TODO: correct this to incorrect input or something
       throw new Error("Incorrct password");
     } else {
       const token = getAccessToken(gotUser);
@@ -73,11 +73,16 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
       res.json({ done: false, err: "Invalid Email" });
       return;
     }
+    const existingWebsite = await user.findOne({ website_name });
+    if (existingWebsite) {
+      res.json({ done: false, err: "Website already exists" });
+      return;
+    }
 
     const newUser = {
       id: existingUser.id,
       username: username ? username : existingUser.username,
-      password: existingUser.username,
+      password: existingUser.password,
       email: email ? email : existingUser.email,
       website_name: website_name ? website_name : existingUser.website_name,
       about: about ? about : existingUser.about,
@@ -100,7 +105,7 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
     };
 
     user.save(newUser);
-    res.status(200).json({ done: "true" });
+    res.status(200).json({ done: true });
   } catch (err) {
     console.log("my error: " + err);
     res.json({ done: false, error: err });
@@ -141,9 +146,14 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
-    const existingUser = await user.findOne({ email: email });
-    if (existingUser) {
+    const existingEmail = await user.findOne({ email: email });
+    if (existingEmail) {
       res.json({ done: false, err: "Email already exists" });
+      return;
+    }
+    const existingWebsite = await user.findOne({ website_name });
+    if (existingWebsite) {
+      res.json({ done: false, err: "Website already exists" });
       return;
     }
     const hashedPassword = await hash(password, 12);

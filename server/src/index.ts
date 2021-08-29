@@ -6,6 +6,7 @@ import { createConnection } from "typeorm";
 
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import webRoutes from "./routes/webRoutes";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -21,6 +22,10 @@ createConnection()
     );
     app.use(express.json());
     app.use(fileUpload());
+
+    // Serving static ejs
+    app.set("view engine", "ejs");
+    app.use("/web", webRoutes);
 
     // Routes
     app.use("/user", userRoutes);

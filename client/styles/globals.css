@@ -2,6 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  background-color: var(--nav-bg);
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -13,4 +14,11 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+:root {
+  --primary-bg: #fcd8d4;
+  --nav-bg: #fdf6f0;
+  --mob-nav: #f8e2cf;
+  --primary-text: #11132c;
 }

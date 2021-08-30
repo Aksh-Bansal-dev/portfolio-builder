@@ -47,6 +47,11 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// returns true if JWT valid
+router.get("/check", authValidation, (_req: Request, res: Response) => {
+  return res.json({ done: true });
+});
+
 // Update
 router.post("/update", authValidation, async (req: Request, res: Response) => {
   try {

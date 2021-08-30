@@ -1,4 +1,4 @@
-import { server } from "src/store/global";
+import { server } from "../../global/server";
 
 type bodyType = {
   email: string;
@@ -8,7 +8,7 @@ type bodyType = {
 export const resetPassword = async (
   body: bodyType
 ): Promise<{ ok: boolean; err?: string }> => {
-  const res = await fetch(server + "/api/user/reset", {
+  const res = await fetch(server + "/auth/reset", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

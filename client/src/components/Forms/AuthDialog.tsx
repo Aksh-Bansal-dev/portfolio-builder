@@ -35,9 +35,9 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen }) => {
   const [page, setPage] = useState(0);
   const heading = ["Login", "Sign Up", "Reset Password"];
   const component = [
-    <Login setPage={setPage} />,
-    <Signup setPage={setPage} />,
-    <ResetPassword setPage={setPage} />,
+    <Login key={1} setPage={setPage} />,
+    <Signup key={2} setPage={setPage} />,
+    <ResetPassword key={3} setPage={setPage} />,
   ];
 
   return (

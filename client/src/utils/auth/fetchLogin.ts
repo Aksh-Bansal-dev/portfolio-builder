@@ -1,4 +1,4 @@
-import { server } from "../../store/global";
+import { server } from "../../global/server";
 
 interface bodyTypes {
   email: string;
@@ -6,12 +6,10 @@ interface bodyTypes {
   password: string;
 }
 export const fetchLogin = async (
-  body: bodyTypes,
-  setToken: (newToken: string) => void
+  body: bodyTypes
 ): Promise<{ done: boolean }> => {
-  const res = await fetch(server + "/api/user/login", {
+  const res = await fetch(server + "/auth/login", {
     method: "POST",
-    credentials: "include",
     headers: {
       "Content-type": "application/json",
     },
@@ -20,7 +18,6 @@ export const fetchLogin = async (
 
   const data = await res.json();
   if (data.done) {
-    setToken(data.accessToken);
     return data;
   } else {
     return data;

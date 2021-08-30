@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
-import { useSignupLoginStyles } from "./RegistrationForm/signupLoginStyle";
+import { useSignupLoginStyles } from "./Forms/signupLoginStyle";
 
 type FormikTextFieldProps = {
   className: string;

@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { Paper, Theme, Typography } from "@material-ui/core";
+import { Theme, Typography } from "@material-ui/core";
 import Login from "./Login";
 import Signup from "./Signup";
-import GoogleButton from "../Buttons/GoogleButton";
 import ResetPassword from "./ResetPassword";
 import BackButton from "../Buttons/BackButton";
+import { useEffect } from "react";
+import { isLogin } from "../../utils/isLogin";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     main: {
-      width: "30vw",
-      background: "#1c1c1c",
+      width: "60vw",
+      background: "var(--nav-bg)",
       [theme.breakpoints.down("sm")]: {
         width: "90vw",
       },
-      color: "#ededed",
+      color: "black",
     },
     title: {
       margin: "3vh",
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: "2vh",
     },
     icon: {
-      color: "#10ABC2",
+      color: "black",
     },
   })
 );
@@ -39,27 +40,31 @@ const useStyles = makeStyles((theme: Theme) =>
 const RegistrationForm: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
+  useEffect(() => {
+    (async () => {
+      const res = await isLogin();
+      if (res) {
+        setPage(1);
+      }
+    })();
+  });
   const heading = ["Login", "Sign Up", "Reset Password"];
   const component = [
-    <Login setPage={setPage} />,
-    <Signup setPage={setPage} />,
-    <ResetPassword setPage={setPage} />,
+    <Login key={1} setPage={setPage} />,
+    <Signup key={2} setPage={setPage} />,
+    <ResetPassword key={3} setPage={setPage} />,
   ];
 
   return (
-    <Paper className={classes.main}>
+    <div className={classes.main}>
       <div className={classes.flexbox}>
         <BackButton className={classes.icon} />
         <Typography className={classes.title} align="center">
           {heading[page]}
         </Typography>
       </div>
-      <GoogleButton />
-      <Typography className={classes.or} align="center">
-        OR
-      </Typography>
       {component[page]}
-    </Paper>
+    </div>
   );
 };
 

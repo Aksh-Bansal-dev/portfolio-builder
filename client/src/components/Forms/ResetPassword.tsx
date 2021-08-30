@@ -5,7 +5,6 @@ import { useSignupLoginStyles } from "./signupLoginStyle";
 import FormikTextField from "../FormikTextField";
 import * as yup from "yup";
 import { resetPassword } from "../../utils/auth/resetPassword";
-import { useHistory } from "react-router";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
@@ -18,7 +17,7 @@ const validSchema = yup.object({
     .string()
     .required()
     .max(64)
-    .matches(/^[a-zA-Z0-9]+(@iiitdmj\.ac\.in)$/, "Invalid Email"),
+    .matches(/^[a-zA-Z0-9]+(@[a-zA-Z0-9]+\.[a-z]+)$/, "Invalid Email"),
   password: yup
     .string()
     .required()
@@ -32,10 +31,9 @@ const validSchema = yup.object({
 });
 
 const ResetPassword: React.FC<LoginProps> = ({ setPage }) => {
-  const history = useHistory();
   const classes = useSignupLoginStyles();
   const [openError, setOpenError] = React.useState(false);
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (_event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -59,7 +57,7 @@ const ResetPassword: React.FC<LoginProps> = ({ setPage }) => {
             setOpenError(true);
           } else {
             resetForm();
-            history.push("/");
+            window.location.href = "/";
           }
           setSubmitting(false);
         }}

@@ -5,6 +5,7 @@ import fileUpload from "express-fileupload";
 import { createConnection } from "typeorm";
 
 import authRoutes from "./routes/authRoutes";
+import templateRoutes from "./routes/templateRoutes";
 import userRoutes from "./routes/userRoutes";
 import webRoutes from "./routes/webRoutes";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -33,6 +34,7 @@ createConnection()
     // Routes
     app.use("/user", userRoutes);
     app.use("/auth", authRoutes);
+    app.use("/template", templateRoutes);
 
     const port = process.env.PORT ? process.env.PORT : 5000;
     app.listen(port, () => {

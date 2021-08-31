@@ -7,16 +7,23 @@
     <title>template 1</title>
   </head>
   <body>
-    <div><%= username %></div>
+    <h1><%= username %></h1>
     <div><%= email %></div>
     <div><%= about %></div>
-    <img src="http://localhost:5000<%= profile_image %>" alt="pic" />
+    <img
+      height="500"
+      src="http://localhost:5000<%= profile_image %>"
+      alt="pic"
+    />
 
-    <div>
+    <ul>
       <% Object.keys(education).forEach(function(prop) { %>
-      <%-education[prop].graduation_year %> <%- education[prop].title %> <%-
-      education[prop].score %> <%- education[prop].degree %> <% }); %>
-    </div>
+      <li><%-education[prop].graduation_year %></li>
+      <li><%- education[prop].title %></li>
+      <li><%- education[prop].score %></li>
+      <li><%- education[prop].degree %></li>
+      <% }); %>
+    </ul>
 
     <div><%= linkedin_profile %></div>
     <div><%= github_profile %></div>

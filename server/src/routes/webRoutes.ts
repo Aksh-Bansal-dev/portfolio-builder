@@ -8,7 +8,7 @@ const router = Router();
 fs.readdirSync(process.cwd() + "/views/").forEach((file) => {
   const fileName = file.substring(0, file.length - 4);
   router.get(`/template/${fileName}`, (_req: Request, res: Response) => {
-    res.render(fileName, {
+    res.render("template_" + fileName, {
       tagline: "douchy tagline",
     });
   });

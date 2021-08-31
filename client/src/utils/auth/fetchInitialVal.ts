@@ -1,24 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { server } from "../../global/server";
 
-const ret = {
-  username: "",
-  email: "",
-  password: "",
-  website_name: "",
-  profile_image: undefined,
-  about: "",
-  education: [],
-  projects: [],
-  info: [],
-  linkedin_profile: "",
-  github_profile: "",
-  codeforces_profile: "",
-  codechef_profile: "",
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const fetchInitialVal = async (): Promise<any> => {
-  if (!localStorage.getItem("jid")) return ret;
+export const fetchInitialVal = async (
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setInitialVal: React.Dispatch<React.SetStateAction<any>>,
+  setImgUrl: React.Dispatch<React.SetStateAction<string>>
+): Promise<any> => {
+  if (!localStorage.getItem("jid")) {
+    setLoading(false);
+    return { done: false };
+  }
   const res = await fetch(server + "/user/everything", {
     headers: {
       Authorization: "bearer " + localStorage.getItem("jid"),
@@ -26,7 +17,8 @@ export const fetchInitialVal = async (): Promise<any> => {
   });
   const data = await res.json();
   if (data.done) {
-    return data.data;
+    setInitialVal(data.data);
+    if (data.data.profile_image) setImgUrl(server + data.data.profile_image);
   }
-  return ret;
+  setLoading(false);
 };

@@ -61,14 +61,27 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
       email,
       website_name,
       about,
-      education,
-      projects,
-      info,
       linkedin_profile,
       github_profile,
       codechef_profile,
       codeforces_profile,
     } = req.body;
+    let { education, projects, info } = req.body;
+
+    education = JSON.parse(education);
+    projects = JSON.parse(projects);
+    info = JSON.parse(info);
+
+    const existingUser = await user.findOne({ email: email });
+    if (!existingUser) {
+      res.json({ done: false, err: "Invalid Email" });
+      return;
+    }
+    const existingWebsite = await user.findOne({ website_name });
+    if (existingWebsite && existingWebsite.id !== existingUser.id) {
+      res.json({ done: false, err: "Website already exists" });
+      return;
+    }
 
     let profile_image: string | undefined;
     if (req.files && req.files.profile_image) {
@@ -78,53 +91,45 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
       const imageId = uuid();
       profile_image = `/images/${imageId}.${extension}`;
       fs.writeFile(
-        path.join(location, imageId),
+        path.join(location, imageId + "." + extension),
         // @ts-ignore
         req.files!.profile_image.data,
         (err) => {
           if (err) {
             console.log(err);
-            return res.json({ done: false, err: "Not able to upload image" });
+            res.json({ done: false, err: "Not able to upload image" });
+            return;
           }
-          return;
         }
       );
     }
 
-    const existingUser = await user.findOne({ email: email });
-    if (!existingUser) {
-      res.json({ done: false, err: "Invalid Email" });
-      return;
-    }
-    const existingWebsite = await user.findOne({ website_name });
-    if (existingWebsite) {
-      res.json({ done: false, err: "Website already exists" });
-      return;
+    if (
+      profile_image &&
+      profile_image.length > 0 &&
+      existingUser.profile_image &&
+      existingUser.profile_image.length > 0
+    ) {
+      fs.unlink(path.join(process.cwd(), existingUser.profile_image), () => {
+        console.log("deleted image");
+      });
     }
 
     const newUser = {
       id: existingUser.id,
-      username: username ? username : existingUser.username,
+      username: username,
       password: existingUser.password,
-      email: email ? email : existingUser.email,
-      website_name: website_name ? website_name : existingUser.website_name,
-      about: about ? about : existingUser.about,
+      email: email,
+      website_name: website_name,
+      about: about,
       profile_image: profile_image ? profile_image : existingUser.profile_image,
-      education: education ? education : existingUser.education,
-      projects: projects ? projects : existingUser.projects,
-      info: info ? info : existingUser.info,
-      linkedin_profile: linkedin_profile
-        ? linkedin_profile
-        : existingUser.linkedin_profile,
-      github_profile: github_profile
-        ? github_profile
-        : existingUser.github_profile,
-      codechef_profile: codechef_profile
-        ? codechef_profile
-        : existingUser.codechef_profile,
-      codeforces_profile: codeforces_profile
-        ? codeforces_profile
-        : existingUser.codeforces_profile,
+      education: education,
+      projects: projects,
+      info: info,
+      linkedin_profile: linkedin_profile,
+      github_profile: github_profile,
+      codechef_profile: codechef_profile,
+      codeforces_profile: codeforces_profile,
     };
 
     user.save(newUser);

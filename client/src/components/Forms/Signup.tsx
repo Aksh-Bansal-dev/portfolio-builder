@@ -7,6 +7,7 @@ import {
   makeStyles,
   Radio,
   Typography,
+  Theme,
 } from "@material-ui/core";
 import { useSignupLoginStyles } from "./signupLoginStyle";
 import FormikTextField from "../FormikTextField";
@@ -18,7 +19,7 @@ import { isLogin } from "../../utils/isLogin";
 import { fetchInitialVal } from "../../utils/auth/fetchInitialVal";
 import { useRouter } from "next/dist/client/router";
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
@@ -43,6 +44,36 @@ export const useStyles = makeStyles(() =>
       fontWeight: "bold",
       margin: "2vh 0",
     },
+    inputBtn: {
+      background: "none",
+      border: "1px solid grey",
+      padding: "1vh 2vh",
+      borderRadius: "4px",
+      fontSize: "1.0rem",
+      cursor: "pointer",
+      color: "grey",
+    },
+    fileInput: {
+      display: "none",
+    },
+    imgCon: {
+      height: "180px",
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        height: "230px",
+      },
+    },
+    imgPreview: {
+      height: "153px",
+      width: "272px",
+      [theme.breakpoints.down("sm")]: {
+        height: "126px",
+        width: "224px",
+      },
+    },
   })
 );
 
@@ -59,7 +90,6 @@ const validSchema = yup.object({
     .matches(/^[a-zA-Z0-9]+(@[a-zA-Z0-9]+\.[a-z]+)$/, "Invalid Email"),
   password: yup
     .string()
-    .required()
     .min(6)
     .matches(/[0-9]/, "Password must include atleast 1 digit"),
 });
@@ -69,14 +99,17 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
   const classes2 = useStyles();
   const router = useRouter();
   const [openError, setOpenError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [isUpdate, setIsUpdate] = React.useState(false);
+  const [imgUrl, setImgUrl] = React.useState("");
+  const [profile_image, setProfile_image] = React.useState<File | undefined>();
   const [initialVal, setInitialVal] = React.useState({
     username: "",
     email: "",
     password: "",
     website_name: "",
-    profile_image: undefined,
     about: "",
+    profile_image: "",
     education: [],
     projects: [],
     info: [],
@@ -92,10 +125,9 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
       if (res) {
         setIsUpdate(true);
       }
-      const val = await fetchInitialVal();
-      setInitialVal(val);
+      await fetchInitialVal(setIsLoading, setInitialVal, setImgUrl);
     })();
-  });
+  }, []);
 
   const handleClose = (_event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -104,19 +136,58 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
 
     setOpenError(false);
   };
+
+  const handleUploadImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      !e.target ||
+      !e.target.files ||
+      !e.target.files[0] ||
+      e.target.files[0].type.substring(0, 5) !== "image"
+    ) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImgUrl(reader.result ? reader.result.toString() : "");
+    };
+    reader.readAsDataURL(e.target.files[0]);
+    setProfile_image(e.target.files[0]);
+  };
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
   return (
     <div>
+      <div className={classes2.imgCon}>
+        <label className={classes2.inputBtn}>
+          Profile Image
+          <input
+            className={classes2.fileInput}
+            type="file"
+            name="profile_image"
+            id="profile_image"
+            onChange={(e) => handleUploadImg(e)}
+            accept="image/gif, image/jpeg, image/png, image/jpg"
+          />
+        </label>
+
+        {imgUrl.length > 0 ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className={classes2.imgPreview} src={imgUrl} alt="" />
+        ) : null}
+      </div>
       <Formik
         initialValues={initialVal}
         validationSchema={validSchema}
-        onSubmit={async (data, { setSubmitting, resetForm }) => {
+        onSubmit={async (data, { setSubmitting }) => {
           setSubmitting(true);
-          const res = await fetchRegister(data);
+          const res = await fetchRegister({ ...data, profile_image });
           if (!res.done) {
             console.log("ERROR FROM BACKEND");
             setOpenError(true);
           } else {
-            resetForm();
             router.push("/");
           }
           setSubmitting(false);
@@ -224,6 +295,20 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
             <FieldArray name="info">
               {(arr) => (
                 <div className={classes2.root}>
+                  <Button
+                    className={classes2.simple}
+                    onClick={() =>
+                      arr.push({
+                        title: "",
+                        description: "",
+                        date: "",
+                        infoType: "",
+                      })
+                    }
+                    variant="outlined"
+                  >
+                    Add More
+                  </Button>
                   {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
                   {values.info.map((_e: any, key: number) => (
                     <div key={key}>
@@ -263,15 +348,23 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         as={Radio}
                       />
                       <span>Experience</span>
-                      <Button
-                        className={classes2.optBtn}
-                        onClick={() => arr.remove(key)}
-                        variant="outlined"
-                      >
-                        X
-                      </Button>
+                      <div className={classes2.flexbox}>
+                        <Button
+                          className={classes2.optBtn}
+                          onClick={() => arr.remove(key)}
+                          variant="outlined"
+                        >
+                          X
+                        </Button>
+                      </div>
                     </div>
                   ))}
+                </div>
+              )}
+            </FieldArray>
+            <FieldArray name="projects">
+              {(arr) => (
+                <div className={classes2.root}>
                   <Button
                     className={classes2.simple}
                     onClick={() =>
@@ -279,19 +372,12 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         title: "",
                         description: "",
                         date: "",
-                        infoType: "",
                       })
                     }
                     variant="outlined"
                   >
-                    Add More
+                    Add Project
                   </Button>
-                </div>
-              )}
-            </FieldArray>
-            <FieldArray name="projects">
-              {(arr) => (
-                <div className={classes2.root}>
                   {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
                   {values.projects.map((_e: any, key: number) => (
                     <div key={key}>
@@ -310,28 +396,17 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         className={classes2.input}
                         name={`projects.${key}.date`}
                       />
-                      <Button
-                        className={classes2.optBtn}
-                        onClick={() => arr.remove(key)}
-                        variant="outlined"
-                      >
-                        X
-                      </Button>
+                      <div className={classes2.flexbox}>
+                        <Button
+                          className={classes2.optBtn}
+                          onClick={() => arr.remove(key)}
+                          variant="outlined"
+                        >
+                          X
+                        </Button>
+                      </div>
                     </div>
                   ))}
-                  <Button
-                    className={classes2.simple}
-                    onClick={() =>
-                      arr.push({
-                        title: "",
-                        description: "",
-                        date: "",
-                      })
-                    }
-                    variant="outlined"
-                  >
-                    Add Project
-                  </Button>
                 </div>
               )}
             </FieldArray>
@@ -342,17 +417,25 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
               type="submit"
               className={classes.btn}
             >
-              Sign Up
+              {isUpdate ? "Update" : "Sign Up"}
             </Button>
           </Form>
         )}
       </Formik>
-      <Typography align="center" className={classes.footer}>
-        Already have an account?{" "}
-        <Link className={classes.link} onClick={() => setPage(0)}>
-          Login
-        </Link>
-      </Typography>
+      {!isUpdate ? (
+        <Typography align="center" className={classes.footer}>
+          Already have an account?{" "}
+          <Link className={classes.link} onClick={() => setPage(0)}>
+            Login
+          </Link>
+        </Typography>
+      ) : (
+        <Typography align="center" className={classes.footer}>
+          <Link className={classes.link} onClick={() => setPage(2)}>
+            Change Password
+          </Link>
+        </Typography>
+      )}
       <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
           Email already taken

@@ -54,7 +54,7 @@ const ResetPassword: React.FC<LoginProps> = ({ setPage }) => {
         onSubmit={async (data, { setSubmitting, resetForm }) => {
           setSubmitting(true);
           const res = await resetPassword(data);
-          if (!res.ok) {
+          if (!res.done) {
             console.log("ERROR FROM BACKEND");
             setOpenError(true);
           } else {

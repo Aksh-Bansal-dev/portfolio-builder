@@ -1,7 +1,7 @@
 export const linklist = [
   {
-    name: "Profile",
-    url: "/profile",
+    name: "Update Profile",
+    url: "/login",
     loginReq: true,
   },
   {
@@ -11,7 +11,7 @@ export const linklist = [
   },
   {
     name: "Logout",
-    url: "/",
+    url: "/login",
     loginReq: true,
   },
 ];

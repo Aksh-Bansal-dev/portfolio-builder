@@ -18,6 +18,7 @@ export const fetchLogin = async (
 
   const data = await res.json();
   if (data.done) {
+    localStorage.setItem("jid", data.accessToken);
     return data;
   } else {
     return data;

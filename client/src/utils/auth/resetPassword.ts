@@ -7,7 +7,7 @@ type bodyType = {
 };
 export const resetPassword = async (
   body: bodyType
-): Promise<{ ok: boolean; err?: string }> => {
+): Promise<{ done: boolean; err?: string }> => {
   const res = await fetch(server + "/auth/reset", {
     method: "POST",
     headers: {

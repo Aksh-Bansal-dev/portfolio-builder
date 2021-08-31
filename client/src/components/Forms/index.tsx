@@ -40,14 +40,16 @@ const useStyles = makeStyles((theme: Theme) =>
 const RegistrationForm: React.FC = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
+  const [isUpdate, setIsUpdate] = useState(false);
   useEffect(() => {
     (async () => {
       const res = await isLogin();
       if (res) {
         setPage(1);
+        setIsUpdate(true);
       }
     })();
-  });
+  }, []);
   const heading = ["Login", "Sign Up", "Reset Password"];
   const component = [
     <Login key={1} setPage={setPage} />,
@@ -60,7 +62,7 @@ const RegistrationForm: React.FC = () => {
       <div className={classes.flexbox}>
         <BackButton className={classes.icon} />
         <Typography className={classes.title} align="center">
-          {heading[page]}
+          {page == 1 && isUpdate ? "Update Profile" : heading[page]}
         </Typography>
       </div>
       {component[page]}

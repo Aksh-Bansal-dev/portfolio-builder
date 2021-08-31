@@ -1,29 +1,27 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: "25%",
-      [theme.breakpoints.up("lg")]: {
-        width: "80%",
-      },
+      margin: "0.5vh 0",
     },
   })
 );
 
 interface TemplateCardInterface {
   link: string;
+  name: string;
 }
 
-const TemplateCard: NextPage<TemplateCardInterface> = ({ link }) => {
+const TemplateCard: NextPage<TemplateCardInterface> = ({ link, name }) => {
   const classes = useStyles();
   return (
-    <Link href={"/"}>
-      <a>
-        <Image className={classes.root} src={link} alt="screenshot" />
+    <Link href={`/template/${name}`}>
+      <a className={classes.root} title={name}>
+        <Image width={352} height={198} src={link} alt={name} />
       </a>
     </Link>
   );

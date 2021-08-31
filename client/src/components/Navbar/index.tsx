@@ -16,6 +16,7 @@ import React from "react";
 import { linklist } from "./linklist";
 import { useEffect } from "react";
 import { isLogin } from "../../utils/isLogin";
+import { useRouter } from "next/dist/client/router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     other: {
       color: "var(--primary-text)",
-      paddingLeft: 20,
+      paddingLeft: "10vh",
     },
     drawerList: {
       width: 300,
@@ -73,6 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar: NextPage = () => {
   const classes = useStyles();
+  const router = useRouter();
   const [drawerOpen, setdrawerOpen] = React.useState(false);
   const [validToken, setValidToken] = React.useState(false);
 
@@ -91,8 +93,11 @@ const NavBar: NextPage = () => {
     return undefined;
   };
 
-  const handleLogout = async () => {
-    logout();
+  const handleLogout = async (url: string) => {
+    if (url === "Logout") logout();
+    else {
+      router.push("/login");
+    }
   };
 
   const drawerList = () => (
@@ -108,7 +113,7 @@ const NavBar: NextPage = () => {
               return (
                 <div
                   className={classes.pseudolink}
-                  onClick={async () => handleLogout()}
+                  onClick={async () => handleLogout(e.name)}
                   key={key}
                 >
                   <ListItem button>
@@ -117,16 +122,21 @@ const NavBar: NextPage = () => {
                 </div>
               );
             else return null;
+          } else {
+            if (!validToken)
+              return (
+                <Link href={e.url} key={key}>
+                  <a>
+                    <ListItem button>
+                      <Typography className={classes.other}>
+                        {e.name}
+                      </Typography>
+                    </ListItem>
+                  </a>
+                </Link>
+              );
+            else return null;
           }
-          return (
-            <Link href={e.url} key={key}>
-              <a>
-                <ListItem button>
-                  <Typography className={classes.other}>{e.name}</Typography>
-                </ListItem>
-              </a>
-            </Link>
-          );
         })}
       </List>
     </div>
@@ -158,7 +168,7 @@ const NavBar: NextPage = () => {
                 if (validToken) {
                   return (
                     <div
-                      onClick={async () => await handleLogout()}
+                      onClick={async () => await handleLogout(e.name)}
                       className={classes.pseudolink}
                       key={key}
                     >
@@ -170,14 +180,21 @@ const NavBar: NextPage = () => {
                 } else {
                   return null;
                 }
+              } else {
+                if (!validToken) {
+                  return (
+                    <Link href={e.url} key={key}>
+                      <a>
+                        <Typography className={classes.other}>
+                          {e.name}
+                        </Typography>
+                      </a>
+                    </Link>
+                  );
+                } else {
+                  return null;
+                }
               }
-              return (
-                <Link href={e.url} key={key}>
-                  <a>
-                    <Typography className={classes.other}>{e.name}</Typography>
-                  </a>
-                </Link>
-              );
             })}
           </div>
         </Toolbar>

@@ -6,7 +6,6 @@ import {
   Link,
   makeStyles,
   Radio,
-  Theme,
   Typography,
 } from "@material-ui/core";
 import { useSignupLoginStyles } from "./signupLoginStyle";
@@ -17,28 +16,32 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { isLogin } from "../../utils/isLogin";
 import { fetchInitialVal } from "../../utils/auth/fetchInitialVal";
+import { useRouter } from "next/dist/client/router";
 
-export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles(() =>
   createStyles({
     root: {
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
+      justifyContent: "center",
+      width: "80%",
     },
-    optInput: {
+    input: {
       marginBottom: "2vh",
-      marginLeft: "6vh",
-      width: "50vh",
-      [theme.breakpoints.down("xs")]: {
-        width: "60vw",
-      },
+      width: "100%",
     },
     optBtn: {
-      width: "10vh",
-      height: 56,
-      [theme.breakpoints.down("xs")]: {
-        width: "10vw",
-      },
+      padding: "0.1vh",
+    },
+    flexbox: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+    },
+    simple: {
+      fontWeight: "bold",
+      margin: "2vh 0",
     },
   })
 );
@@ -64,6 +67,7 @@ const validSchema = yup.object({
 const Signup: React.FC<SignupProps> = ({ setPage }) => {
   const classes = useSignupLoginStyles();
   const classes2 = useStyles();
+  const router = useRouter();
   const [openError, setOpenError] = React.useState(false);
   const [isUpdate, setIsUpdate] = React.useState(false);
   const [initialVal, setInitialVal] = React.useState({
@@ -113,7 +117,7 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
             setOpenError(true);
           } else {
             resetForm();
-            window.location.href = "/";
+            router.push("/");
           }
           setSubmitting(false);
         }}
@@ -166,39 +170,8 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
             <FieldArray name="education">
               {(arr) => (
                 <div className={classes2.root}>
-                  {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
-                  {values.education.map((_e: any, key: number) => (
-                    <div key={key}>
-                      <FormikTextField
-                        label={`Degree`}
-                        className={classes.input}
-                        name={`education.${key}.degree`}
-                      />
-                      <FormikTextField
-                        label={`Title`}
-                        className={classes.input}
-                        name={`education.${key}.title`}
-                      />
-                      <FormikTextField
-                        label={`Result/Grade`}
-                        className={classes.input}
-                        name={`education.${key}.score`}
-                      />
-                      <FormikTextField
-                        label={`Graduation Year`}
-                        className={classes.input}
-                        name={`education.${key}.graduation_year`}
-                      />
-                      <Button
-                        className={classes2.optBtn}
-                        onClick={() => arr.remove(key)}
-                        variant="outlined"
-                      >
-                        X
-                      </Button>
-                    </div>
-                  ))}
                   <Button
+                    className={classes2.simple}
                     onClick={() =>
                       arr.push({
                         degree: "",
@@ -211,6 +184,40 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                   >
                     Add Education
                   </Button>
+                  {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+                  {values.education.map((_e: any, key: number) => (
+                    <div key={key}>
+                      <FormikTextField
+                        label={`Degree`}
+                        className={classes2.input}
+                        name={`education.${key}.degree`}
+                      />
+                      <FormikTextField
+                        label={`Title`}
+                        className={classes2.input}
+                        name={`education.${key}.title`}
+                      />
+                      <FormikTextField
+                        label={`Result/Grade`}
+                        className={classes2.input}
+                        name={`education.${key}.score`}
+                      />
+                      <FormikTextField
+                        label={`Graduation Year`}
+                        className={classes2.input}
+                        name={`education.${key}.graduation_year`}
+                      />
+                      <div className={classes2.flexbox}>
+                        <Button
+                          className={classes2.optBtn}
+                          onClick={() => arr.remove(key)}
+                          variant="outlined"
+                        >
+                          X
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </FieldArray>
@@ -222,17 +229,17 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                     <div key={key}>
                       <FormikTextField
                         label={`Title`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`info.${key}.title`}
                       />
                       <FormikTextField
                         label={`Description`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`info.${key}.description`}
                       />
                       <FormikTextField
                         label={`Date`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`info.${key}.year`}
                       />
                       <Field
@@ -266,6 +273,7 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                     </div>
                   ))}
                   <Button
+                    className={classes2.simple}
                     onClick={() =>
                       arr.push({
                         title: "",
@@ -276,7 +284,7 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                     }
                     variant="outlined"
                   >
-                    Add Achievements/Experience/Contribution
+                    Add More
                   </Button>
                 </div>
               )}
@@ -289,17 +297,17 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                     <div key={key}>
                       <FormikTextField
                         label={`Title`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`projects.${key}.title`}
                       />
                       <FormikTextField
                         label={`Description`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`projects.${key}.description`}
                       />
                       <FormikTextField
                         label={`Date`}
-                        className={classes.input}
+                        className={classes2.input}
                         name={`projects.${key}.date`}
                       />
                       <Button
@@ -312,6 +320,7 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                     </div>
                   ))}
                   <Button
+                    className={classes2.simple}
                     onClick={() =>
                       arr.push({
                         title: "",

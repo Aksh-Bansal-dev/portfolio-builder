@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { fetchLogin } from "../../utils/auth/fetchLogin";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import { useRouter } from "next/dist/client/router";
 
 interface LoginProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -23,6 +24,7 @@ const validSchema = yup.object({
 
 const Login: React.FC<LoginProps> = ({ setPage }) => {
   const classes = useSignupLoginStyles();
+  const router = useRouter();
   const [openError, setOpenError] = useState(false);
   const handleClose = (_event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -47,7 +49,7 @@ const Login: React.FC<LoginProps> = ({ setPage }) => {
             setOpenError(true);
           } else {
             resetForm();
-            window.location.replace("/");
+            router.push("/");
           }
           setSubmitting(false);
         }}

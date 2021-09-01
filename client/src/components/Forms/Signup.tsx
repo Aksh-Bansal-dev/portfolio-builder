@@ -188,7 +188,8 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
             console.log("ERROR FROM BACKEND");
             setOpenError(true);
           } else {
-            router.push("/");
+            if (isUpdate) router.push("/");
+            else router.push("/login");
           }
           setSubmitting(false);
         }}
@@ -264,7 +265,7 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         name={`education.${key}.degree`}
                       />
                       <FormikTextField
-                        label={`Title`}
+                        label={`Institute`}
                         className={classes2.input}
                         name={`education.${key}.title`}
                       />
@@ -278,76 +279,6 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         className={classes2.input}
                         name={`education.${key}.graduation_year`}
                       />
-                      <div className={classes2.flexbox}>
-                        <Button
-                          className={classes2.optBtn}
-                          onClick={() => arr.remove(key)}
-                          variant="outlined"
-                        >
-                          X
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </FieldArray>
-            <FieldArray name="info">
-              {(arr) => (
-                <div className={classes2.root}>
-                  <Button
-                    className={classes2.simple}
-                    onClick={() =>
-                      arr.push({
-                        title: "",
-                        description: "",
-                        date: "",
-                        infoType: "",
-                      })
-                    }
-                    variant="outlined"
-                  >
-                    Add More
-                  </Button>
-                  {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
-                  {values.info.map((_e: any, key: number) => (
-                    <div key={key}>
-                      <FormikTextField
-                        label={`Title`}
-                        className={classes2.input}
-                        name={`info.${key}.title`}
-                      />
-                      <FormikTextField
-                        label={`Description`}
-                        className={classes2.input}
-                        name={`info.${key}.description`}
-                      />
-                      <FormikTextField
-                        label={`Date`}
-                        className={classes2.input}
-                        name={`info.${key}.year`}
-                      />
-                      <Field
-                        name={`info.${key}.infoType`}
-                        type="radio"
-                        value="achievement"
-                        as={Radio}
-                      />
-                      <span>Achievement</span>
-                      <Field
-                        name={`info.${key}.infoType`}
-                        type="radio"
-                        value="contribution"
-                        as={Radio}
-                      />
-                      <span>Contribution</span>
-                      <Field
-                        name={`info.${key}.infoType`}
-                        type="radio"
-                        value="experience"
-                        as={Radio}
-                      />
-                      <span>Experience</span>
                       <div className={classes2.flexbox}>
                         <Button
                           className={classes2.optBtn}
@@ -396,6 +327,76 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
                         className={classes2.input}
                         name={`projects.${key}.date`}
                       />
+                      <div className={classes2.flexbox}>
+                        <Button
+                          className={classes2.optBtn}
+                          onClick={() => arr.remove(key)}
+                          variant="outlined"
+                        >
+                          X
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </FieldArray>
+            <FieldArray name="info">
+              {(arr) => (
+                <div className={classes2.root}>
+                  <Button
+                    className={classes2.simple}
+                    onClick={() =>
+                      arr.push({
+                        title: "",
+                        description: "",
+                        date: "",
+                        infoType: "",
+                      })
+                    }
+                    variant="outlined"
+                  >
+                    Add More Info
+                  </Button>
+                  {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+                  {values.info.map((_e: any, key: number) => (
+                    <div key={key}>
+                      <FormikTextField
+                        label={`Title`}
+                        className={classes2.input}
+                        name={`info.${key}.title`}
+                      />
+                      <FormikTextField
+                        label={`Description`}
+                        className={classes2.input}
+                        name={`info.${key}.description`}
+                      />
+                      <FormikTextField
+                        label={`Date`}
+                        className={classes2.input}
+                        name={`info.${key}.year`}
+                      />
+                      <Field
+                        name={`info.${key}.infoType`}
+                        type="radio"
+                        value="achievement"
+                        as={Radio}
+                      />
+                      <span>Achievement</span>
+                      <Field
+                        name={`info.${key}.infoType`}
+                        type="radio"
+                        value="contribution"
+                        as={Radio}
+                      />
+                      <span>Contribution</span>
+                      <Field
+                        name={`info.${key}.infoType`}
+                        type="radio"
+                        value="experience"
+                        as={Radio}
+                      />
+                      <span>Experience</span>
                       <div className={classes2.flexbox}>
                         <Button
                           className={classes2.optBtn}

@@ -29,7 +29,7 @@ router.get("/:website", async (req: Request, res: Response) => {
       ...myUser[0],
     });
   } catch (err) {
-    return res.json({ done: false, err: "Something went wrong" });
+    return res.send("No Template Selected");
   }
 });
 

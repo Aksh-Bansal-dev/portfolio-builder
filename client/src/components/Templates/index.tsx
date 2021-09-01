@@ -3,6 +3,7 @@ import TemplateCard from "./TemplateCard";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useState, useEffect } from "react";
 import { fetchTemplates } from "../../utils/fetchTemplates";
+import { server } from "../../global/server";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -46,7 +47,7 @@ const Templates: NextPage = () => {
         <TemplateCard
           key={key}
           name={e.template_name}
-          link={e.display_picture}
+          link={server + e.display_picture}
         />
       ))}
     </div>

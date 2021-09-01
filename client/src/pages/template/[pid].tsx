@@ -47,7 +47,7 @@ const TemplatePage: NextPage = () => {
   const handleThis = async () => {
     const res = await linkTemplateToUser(router.query.pid as string);
     if (res.done) {
-      router.push("/");
+      router.push("/profile");
     }
   };
 

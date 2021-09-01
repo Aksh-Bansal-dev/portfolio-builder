@@ -94,9 +94,11 @@ const NavBar: NextPage = () => {
   };
 
   const handleLogout = async (url: string) => {
-    if (url === "Logout") logout();
-    else {
-      router.push("/login");
+    if (url === "/logout") {
+      logout();
+      router.push("/");
+    } else {
+      router.push(url);
     }
   };
 
@@ -113,7 +115,7 @@ const NavBar: NextPage = () => {
               return (
                 <div
                   className={classes.pseudolink}
-                  onClick={async () => handleLogout(e.name)}
+                  onClick={async () => handleLogout(e.url)}
                   key={key}
                 >
                   <ListItem button>
@@ -168,7 +170,7 @@ const NavBar: NextPage = () => {
                 if (validToken) {
                   return (
                     <div
-                      onClick={async () => await handleLogout(e.name)}
+                      onClick={async () => await handleLogout(e.url)}
                       className={classes.pseudolink}
                       key={key}
                     >

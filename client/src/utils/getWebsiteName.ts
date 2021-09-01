@@ -1,21 +1,18 @@
 import { server } from "../global/server";
 import { isLogin } from "./isLogin";
 
-export const linkTemplateToUser = async (
-  template_name: string
-): Promise<{ done: boolean }> => {
+export const getWebsiteName = async (): Promise<{
+  done: boolean;
+  data?: { website_name: string };
+}> => {
   if (!isLogin()) {
     return { done: false };
   }
-  const res = await fetch(server + "/user/template", {
-    method: "POST",
+  const res = await fetch(server + "/user/website_name", {
     headers: {
-      "Content-type": "application/json",
       Authorization: "bearer " + localStorage.getItem("jid"),
     },
-    body: JSON.stringify({ template_name }),
   });
-
   const data = await res.json();
   return data;
 };

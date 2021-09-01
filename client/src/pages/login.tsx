@@ -1,7 +1,7 @@
-import { makeStyles, createStyles } from "@material-ui/core";
 import type { NextPage } from "next";
 import RegistrationForm from "../components/Forms";
 import NavBar from "../components/Navbar";
+import { makeStyles, createStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() =>
   createStyles({

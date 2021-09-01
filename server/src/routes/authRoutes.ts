@@ -151,35 +151,17 @@ router.post("/register", async (req: Request, res: Response) => {
       password,
       website_name,
       about,
-      education,
-      projects,
-      info,
       linkedin_profile,
       github_profile,
       codechef_profile,
       codeforces_profile,
     } = req.body;
 
-    let profile_image: string | undefined;
-    if (req.files && req.files.profile_image) {
-      const location = path.join(process.cwd(), "images");
-      // @ts-ignore
-      const extension = req.files.profile_image.name.split(".").pop();
-      const imageId = uuid();
-      profile_image = `/images/${imageId}.${extension}`;
-      fs.writeFile(
-        path.join(location, imageId),
-        // @ts-ignore
-        req.files!.profile_image.data,
-        (err) => {
-          if (err) {
-            console.log(err);
-            return res.json({ done: false, err: "Not able to upload image" });
-          }
-          return;
-        }
-      );
-    }
+    let { education, projects, info } = req.body;
+
+    education = JSON.parse(education);
+    projects = JSON.parse(projects);
+    info = JSON.parse(info);
 
     if (!username || !email || !password) {
       res.json({ done: false, err: "Invalid Input" });
@@ -197,6 +179,27 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
     const hashedPassword = await hash(password, 12);
+
+    let profile_image: string | undefined;
+    if (req.files && req.files.profile_image) {
+      const location = path.join(process.cwd(), "images");
+      // @ts-ignore
+      const extension = req.files.profile_image.name.split(".").pop();
+      const imageId = uuid();
+      profile_image = `/images/${imageId}.${extension}`;
+      fs.writeFile(
+        path.join(location, imageId + "." + extension),
+        // @ts-ignore
+        req.files!.profile_image.data,
+        (err) => {
+          if (err) {
+            console.log(err);
+            res.json({ done: false, err: "Not able to upload image" });
+            return;
+          }
+        }
+      );
+    }
 
     const newUser = {
       username,

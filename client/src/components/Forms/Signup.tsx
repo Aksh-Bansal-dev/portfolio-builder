@@ -156,6 +156,85 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
 
   if (isLoading) {
     return <h2>Loading...</h2>;
+  } else if (!isUpdate) {
+    return (
+      <div>
+        <Formik
+          initialValues={initialVal}
+          validationSchema={validSchema}
+          onSubmit={async (data, { setSubmitting }) => {
+            setSubmitting(true);
+            const res = await fetchRegister({ ...data, profile_image });
+            if (!res.done) {
+              console.log("ERROR FROM BACKEND");
+              setOpenError(true);
+            } else {
+              if (isUpdate) router.push("/");
+              else window.location.href = "/login";
+            }
+            setSubmitting(false);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form className={classes.root} noValidate autoComplete="off">
+              <FormikTextField
+                name="username"
+                label="Name"
+                className={classes.input}
+              />
+              <FormikTextField
+                name="email"
+                label="Email"
+                className={classes.input}
+              />
+              <FormikTextField
+                name="password"
+                type="password"
+                label="Password"
+                className={classes.input}
+              />
+              <FormikTextField
+                name="website_name"
+                label="Website Name"
+                className={classes.input}
+              />
+              <Button
+                disabled={isSubmitting}
+                color="inherit"
+                variant="contained"
+                type="submit"
+                className={classes.btn}
+              >
+                {isUpdate ? "Update" : "Sign Up"}
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        {!isUpdate ? (
+          <Typography align="center" className={classes.footer}>
+            Already have an account?{" "}
+            <Link className={classes.link} onClick={() => setPage(0)}>
+              Login
+            </Link>
+          </Typography>
+        ) : (
+          <Typography align="center" className={classes.footer}>
+            <Link className={classes.link} onClick={() => setPage(2)}>
+              Change Password
+            </Link>
+          </Typography>
+        )}
+        <Snackbar
+          open={openError}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="error">
+            Email already taken
+          </Alert>
+        </Snackbar>
+      </div>
+    );
   }
 
   return (
@@ -206,14 +285,6 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
               label="Email"
               className={classes.input}
             />
-            {isUpdate ? null : (
-              <FormikTextField
-                name="password"
-                type="password"
-                label="Password"
-                className={classes.input}
-              />
-            )}
             <FormikTextField
               name="website_name"
               label="Website Name"

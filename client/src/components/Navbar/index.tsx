@@ -96,7 +96,7 @@ const NavBar: NextPage = () => {
   const handleLogout = async (url: string) => {
     if (url === "/logout") {
       logout();
-      router.push("/");
+      window.location.href = "/";
     } else {
       router.push(url);
     }

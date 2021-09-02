@@ -4,19 +4,106 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <title>template1</title>
   </head>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: white;
+      background: rgb(255, 224, 246);
+      background: linear-gradient(
+        133deg,
+        rgba(255, 224, 246, 1) 0%,
+        rgba(147, 2, 12, 1) 41%
+      );
+    }
+    * {
+      font-family: "Lato", sans-serif;
+    }
+    a {
+      color: white;
+    }
+    .main {
+      height: 100vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .main h1 {
+      font-size: 4rem;
+      font-weight: bold;
+    }
+    .education,
+    .project,
+    .info {
+      padding: 5vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .contact {
+      padding: 5vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
   <body>
-    <h1>Uchiha Madara</h1>
-    <div>madara@uchiha.com</div>
-    <div>Defeated all 5 hokages alone</div>
-    <img src="http://localhost:5000/images/madara.jpg" alt="Uchiha Madara" />
-
-    <div>One of strongest uchihas</div>
-    <br />
-    <div>fuck linkedin_profile</div>
-    <div>fuck github_profile</div>
-    <div>fuck codechef_profile</div>
-    <div>fuck codeforces_profile</div>
+    <div class="main">
+      <div class="intro">
+        <h1>Hi there,</h1>
+        <h1>I am <span>Uchiha Madara</span></h1>
+        <h2>Defeated all 5 hokages alone</h2>
+      </div>
+      <div class="profile-image">
+        <img
+          width="300"
+          height="400"
+          src="http://localhost:5000/images/madara.jpg"
+          alt="Uchiha Madara"
+        />
+      </div>
+    </div>
+    <div class="education">
+      <h2>Education</h2>
+      <ul>
+        <li>Konoha</li>
+        <li>Sharingan</li>
+        <li>Long time ago</li>
+      </ul>
+    </div>
+    <div class="project">
+      <h2>Projects</h2>
+      <ul>
+        <li>Mangekyou Sharingan</li>
+        <li>Ultimate sharingan form</li>
+        <li>Long time ago</li>
+      </ul>
+    </div>
+    <div class="info">
+      <h2>More info</h2>
+      <ul>
+        <li>Uchiha</li>
+        <li>Made Uchihas strongest and most feared clan</li>
+        <li>Long time ago</li>
+      </ul>
+    </div>
+    <div class="contact">
+      <a href="mailto:madara@uchiha.com">madara@uchiha.com</a>
+      <a href="example.com">sharingan linkedin_profile</a>
+      <a href="example.com">sharingan github_profile</a>
+      <a href="example.com">sharingan codechef_profile</a>
+      <a href="example.com">sharingan codeforces_profile</a>
+    </div>
   </body>
 </html>

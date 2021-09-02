@@ -4,30 +4,114 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>template 1</title>
-  </head>
-  <body>
-    <h1><%= username %></h1>
-    <div><%= email %></div>
-    <div><%= about %></div>
-    <img
-      height="500"
-      src="http://localhost:5000<%= profile_image %>"
-      alt="pic"
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
     />
-
-    <ul>
+    <title>template1</title>
+  </head>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: white;
+      background: rgb(255, 224, 246);
+      background: linear-gradient(
+        133deg,
+        rgba(255, 224, 246, 1) 0%,
+        rgba(147, 2, 12, 1) 41%
+      );
+    }
+    * {
+      font-family: "Lato", sans-serif;
+    }
+    a {
+      color: white;
+    }
+    .main {
+      height: 100vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .main h1 {
+      font-size: 4rem;
+      font-weight: bold;
+    }
+    .education,
+    .project,
+    .info {
+      padding: 5vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .contact {
+      padding: 5vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
+  <body>
+    <div class="main">
+      <div class="intro">
+        <h1>Hi there,</h1>
+        <h1>I am <span><%= username %></span></h1>
+        <h2><%= about %></h2>
+      </div>
+      <div class="profile-image">
+        <img
+          width="300"
+          height="400"
+          src="http://localhost:5000<%= profile_image %>"
+          alt="<%= username %>"
+        />
+      </div>
+    </div>
+    <div class="education">
+      <h2>Education</h2>
       <% Object.keys(education).forEach(function(prop) { %>
-      <li><%-education[prop].graduation_year %></li>
-      <li><%- education[prop].title %></li>
-      <li><%- education[prop].score %></li>
+      <ul>
+      <li><%-education[prop].title %></li>
       <li><%- education[prop].degree %></li>
+      <li><%- education[prop].graduation_year %></li>
+      <li><%- education[prop].score %></li>
+      </ul>
       <% }); %>
-    </ul>
-
-    <div><%= linkedin_profile %></div>
-    <div><%= github_profile %></div>
-    <div><%= codechef_profile %></div>
-    <div><%= codeforces_profile %></div>
+    </div>
+    <div class="project">
+      <h2>Projects</h2>
+      <% Object.keys(projects).forEach(function(prop) { %>
+      <ul>
+      <li><%- education[prop].title %></li>
+      <li><%- education[prop].description %></li>
+      <li><%-education[prop].date %></li>
+      </ul>
+      <% }); %>
+    </div>
+    <div class="info">
+      <h2>More info</h2>
+      <ul>
+      <% Object.keys(info).forEach(function(prop) { %>
+        <ul>
+      <li><%- education[prop].title %></li>
+      <li><%- education[prop].description %></li>
+      <li><%-education[prop].year %></li>
+        </ul>
+      <% }); %>
+    </div>
+    <div class="contact">
+      <a href="mailto:<%= email %>"><%= email %></a>
+      <a href="<%= linkedin_profile %>"><%= linkedin_profile %></a>
+      <a href="<%= github_profile %>"><%= github_profile %></a>
+      <a href="<%= codechef_profile %>"><%= codechef_profile %></a>
+      <a href="<%= codeforces_profile %>"><%= codeforces_profile %></a>
+    </div>
   </body>
 </html>

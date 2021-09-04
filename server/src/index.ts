@@ -4,6 +4,7 @@ import "reflect-metadata";
 import fileUpload from "express-fileupload";
 import { createConnection } from "typeorm";
 
+import { initialTemplateData } from "./utils/initialTemplateData";
 import authRoutes from "./routes/authRoutes";
 import templateRoutes from "./routes/templateRoutes";
 import userRoutes from "./routes/userRoutes";
@@ -30,6 +31,8 @@ createConnection()
     // Serving static ejs
     app.set("view engine", "ejs");
     app.use("/web", webRoutes);
+
+    initialTemplateData();
 
     // Routes
     app.use("/user", userRoutes);

@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <title>template1</title>
+    <title><%= username %></title>
   </head>
   <style>
     html,
@@ -37,10 +37,17 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
+      flex-wrap: wrap;
+    }
+    .main .intro{
+      max-width: 50vw;
     }
     .main h1 {
       font-size: 4rem;
       font-weight: bold;
+    }
+    .main h2 {
+      font-size: 1rem;
     }
     .education,
     .project,
@@ -89,9 +96,9 @@
       <h2>Projects</h2>
       <% Object.keys(projects).forEach(function(prop) { %>
       <ul>
-      <li><%- education[prop].title %></li>
-      <li><%- education[prop].description %></li>
-      <li><%-education[prop].date %></li>
+      <li><%- projects[prop].title %></li>
+      <li><%- projects[prop].description %></li>
+      <li><%-projects[prop].date %></li>
       </ul>
       <% }); %>
     </div>
@@ -100,9 +107,9 @@
       <ul>
       <% Object.keys(info).forEach(function(prop) { %>
         <ul>
-      <li><%- education[prop].title %></li>
-      <li><%- education[prop].description %></li>
-      <li><%-education[prop].year %></li>
+      <li><%- info[prop].title %></li>
+      <li><%- info[prop].description %></li>
+      <li><%- info[prop].year %></li>
         </ul>
       <% }); %>
     </div>

@@ -286,6 +286,11 @@ const Signup: React.FC<SignupProps> = ({ setPage }) => {
               className={classes.input}
             />
             <FormikTextField
+              name="about"
+              label="About"
+              className={classes.input}
+            />
+            <FormikTextField
               name="website_name"
               label="Website Name"
               className={classes.input}

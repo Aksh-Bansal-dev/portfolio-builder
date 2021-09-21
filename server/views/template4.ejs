@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+  <title><%= username %></title>
+
+  <style>
+    body {
+      background-color: rgb(123, 123, 131);
+      color: white;
+      background: url("/images/template_bg4.jpg")no-repeat center center/cover;
+    }
+
+    #about-para {
+      padding: 10px;
+      width: 70%;
+      text-align: justify;
+      color: white;
+      line-height: 28px;
+      font-size: 1.1rem;
+      margin: auto;
+    }
+
+    #intro {
+      text-align: center;
+
+    }
+
+    #education {
+      text-align: center;
+
+    }
+
+    #projects {
+      text-align: center;
+    }
+
+    #achievements {
+      text-align: center;
+    }
+
+    #contact {
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar sticky-top navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" ><%= username %></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link" href="#intro">INTRO</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#education">EDUCATION</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#projects">PROJECTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#achievements">ACHIEVEMENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">CONTACT</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Intro -->
+  <div id="intro" class="d-flex justify-content-between">
+    <div class=" container">
+      <br><br>
+      <h2><%= username %></h2><br>
+      <img src="http://localhost:5000<%= profile_image %>" alt="profile-pic" class="img-fluid img-thumbnail"
+        style="border-radius: 100%; width: 20rem ;height:20rem; ">
+      <br><br>
+  <div id="about">
+    <%= about %>
+  </div>
+      <br><br>
+    </div>
+
+
+  </div>
+
+
+
+  <!-- Education -->
+  <div id="education" class="container">
+
+    <br><br>
+    <h1>Education</h1>
+    <div id="education-details" class="d-flex justify-content-around flex-wrap" style="text-align: center;">
+
+      <% Object.keys(education).forEach(function(prop) { %>
+      <div class="card text-white bg-dark mb-3" style="min-width: 28vw; margin: 1vh; border : 2px solid rgb(83, 83, 235) ">
+        <div class="card-body">
+          <h4 class="card-title"><%-education[prop].title %></h4>
+          <h5 class="card-title"><%-education[prop].degree %></h5>
+          <h5 class="card-title"><%-education[prop].graduation_year %></h5>
+          <h6 class="card-title"><%-education[prop].score %></h6>
+        </div>
+      </div>
+      <% }); %>
+
+
+    </div>
+  </div>
+
+
+  <!-- projects -->
+  <div id="projects" class="container">
+
+    <br><br>
+    <h1>Projects</h1>
+
+    <div id="project-details" class="d-flex justify-content-around flex-wrap" style="text-align: center;">
+
+      <% Object.keys(projects).forEach(function(prop) { %>
+      <div class="card text-white bg-dark mb-3" style="min-width: 28vw; margin: 1vh; border : 2px solid rgb(83, 83, 235) ">
+        <div class="card-body">
+          <h4 class="card-title"><%-projects[prop].title %></h4>
+          <h5 class="card-title"><%-projects[prop].year %></h5>
+          <div class="card-text"><%-projects[prop].description %></div>
+        </div>
+      </div>
+      <% }); %>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- achievements -->
+  <div id="achievements" class="container">
+
+    <br><br>
+    <h1>Info</h1>
+     <br>
+
+    <div id="achievements-details" class="d-flex justify-content-around flex-wrap" style="text-align: center;">
+
+      <% Object.keys(info).forEach(function(prop) { %>
+      <div class="card text-white bg-dark mb-3" style="min-width: 28vw; margin: 1vh; border : 2px solid rgb(83, 83, 235) ">
+        <div class="card-body">
+          <h4 class="card-title"><%-info[prop].title %></h4>
+          <h5 class="card-title"><%-info[prop].year %></h5>
+          <h6 class="card-title text-secondary"><%-info[prop].infoType %></h6>
+          <div class="card-text"><%-info[prop].description %></div>
+        </div>
+      </div>
+      <% }); %>
+
+    </div>
+
+  </div>
+
+   <!-- contact -->
+   <div id="contact"class="container">
+
+    <br><br>
+    <h1>Contact_Me</h1>
+    <br>
+    <div id = "contact_details" class="container" style="text-align: center;">
+      <h5 style ="margin : 2rem 2rem;">EMAIL ID : <%= email %>  </h5>
+
+      <h5 style="text-align: center; ">SOCIAL MEDIA ACCOUNTS</h5>
+      <div class="container" style="text-align: center;">
+         <a href="<%= github_profile %>"><button type="button" class="btn btn-primary" style="margin :1rem 1rem;">GITHUB</button></a>
+         <a href="<%= codeforces_profile %>"><button type="button" class="btn btn-secondary" style="margin :1rem 1rem;">CODEFORCES</button></a>
+         <a href="<%= codechef_profile %>"><button type="button" class="btn btn-danger" style="margin :1rem 1rem;">CODECHEF</button></a>
+         <a href="<%= linkedin_profile %>"><button type="button" class="btn btn-warning" style="margin :1rem 1rem;">LINKEDIN</button></a>
+     </div>
+     <br>
+ </div>
+
+    </div>
+
+   </div>
+
+
+  <!-- Optional JavaScript; choose one of the two! -->
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!--
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+    -->
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+</body>
+
+</html>

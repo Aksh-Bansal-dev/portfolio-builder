@@ -765,7 +765,7 @@
     <% Object.keys(projects).forEach(function(prop) { %>
       `;
       project_title.push("<%- projects[prop].title %>");
-      project_desc.push("<%- projects[prop].description %>");
+      project_desc.push(`<%- projects[prop].description %>`);
       project_date.push("<%- projects[prop].date %>");
       useless = `
     <% }); %>
@@ -832,7 +832,7 @@
     <% Object.keys(info).forEach(function(prop) { %>
       `;
       info_title.push("<%- info[prop].title %>");
-      info_desc.push("<%- info[prop].description %>");
+      info_desc.push(`<%- info[prop].description %>`);
       info_year.push("<%- info[prop].year %>");
       info_type.push("<%- info[prop].infoType %>");
       useless = `
@@ -857,7 +857,7 @@
       </div>`;
       }
 
-      let about = "<%= about %>";
+      let about = `<%= about %>`;
 
       document.getElementById("about-para").innerText = about;
 

@@ -10,6 +10,14 @@
       href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
     <title>template1</title>
   </head>
   <style>
@@ -17,20 +25,20 @@
     body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       color: white;
+      box-sizing: border-box;
       background: rgb(255, 224, 246);
       background: linear-gradient(
         133deg,
-        rgba(255, 224, 246, 1) 0%,
-        rgba(147, 2, 12, 1) 41%
+        rgba(29, 29, 29, 1) 0%,
+        rgba(147, 2, 12, 1) 51%
       );
     }
     * {
       font-family: "Lato", sans-serif;
     }
     a {
-      color: white;
+      color: rgb(209, 209, 209);
     }
     .main {
       height: 100vh;
@@ -39,8 +47,13 @@
       align-items: center;
     }
     .main h1 {
+      color: rgb(216, 216, 216);
       font-size: 4rem;
       font-weight: bold;
+    }
+    .main h2 {
+      color: rgba(255, 255, 255, 0.705);
+      font-size: 1.5rem;
     }
     .education,
     .project,
@@ -57,10 +70,49 @@
       align-items: center;
       flex-direction: column;
     }
+    .bnav {
+      background: rgba(53, 53, 53, 0) !important;
+    }
   </style>
   <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark bnav">
+      <div class="container-fluid">
+        <a class="navbar-brand px-3">Madara</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#intro">INTRO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#education">EDUCATION</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#projects">PROJECTS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#info">MY INFO</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">CONTACT</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div class="main">
-      <div class="intro">
+      <div class="intro" id="intro">
         <h1>Hi there,</h1>
         <h1>I am <span>Uchiha Madara</span></h1>
         <h2>Defeated all 5 hokages alone</h2>
@@ -74,7 +126,9 @@
         />
       </div>
     </div>
-    <div class="education">
+
+    <!-- Education -->
+    <div class="education" id="education">
       <h2>Education</h2>
       <ul>
         <li>Konoha</li>
@@ -82,7 +136,9 @@
         <li>Long time ago</li>
       </ul>
     </div>
-    <div class="project">
+
+    <!-- Projects -->
+    <div class="project" id="projects">
       <h2>Projects</h2>
       <ul>
         <li>Mangekyou Sharingan</li>
@@ -90,7 +146,9 @@
         <li>Long time ago</li>
       </ul>
     </div>
-    <div class="info">
+
+    <!-- info -->
+    <div class="info" id="info">
       <h2>More info</h2>
       <ul>
         <li>Uchiha</li>
@@ -98,12 +156,26 @@
         <li>Long time ago</li>
       </ul>
     </div>
-    <div class="contact">
+
+    <!-- Contact -->
+    <div class="contact" id="contact">
+      <h2>Contact Me</h2>
       <a href="mailto:madara@uchiha.com">madara@uchiha.com</a>
       <a href="example.com">sharingan linkedin_profile</a>
       <a href="example.com">sharingan github_profile</a>
       <a href="example.com">sharingan codechef_profile</a>
       <a href="example.com">sharingan codeforces_profile</a>
     </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+      integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+      integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

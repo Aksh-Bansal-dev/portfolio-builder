@@ -9,7 +9,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Portfolio Builder</title>
         <meta name="description" content="helps build portfolio" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <NavBar />
       <Templates />

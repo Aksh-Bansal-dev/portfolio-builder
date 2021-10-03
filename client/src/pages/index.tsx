@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import NavBar from "../components/Navbar";
 import Templates from "../components/Templates";
+import TemplateFooter from "../components/Templates/TemplateFooter";
 
 const Home: NextPage = () => {
   return (
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
       </Head>
       <NavBar />
       <Templates />
+      <TemplateFooter />
     </div>
   );
 };

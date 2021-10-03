@@ -9,7 +9,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       padding: "2vh",
-      minHeight: "90vh",
+      minHeight: "85vh",
       display: "flex",
       justifyContent: "space-around",
       flexWrap: "wrap",

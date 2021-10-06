@@ -225,6 +225,30 @@ router.post("/register", async (req: Request, res: Response) => {
   }
 });
 
+// Forgot Password
+router.post("/forgot", async (req: Request, res: Response) => {
+  try {
+    const user = getRepository(User);
+    const { email, website_name, newPassword } = req.body;
+    const myUser = await user.findOne({ email: email });
+    if (!myUser) {
+      throw new Error("No user found");
+    }
+    const og_website_name = myUser.website_name;
+    if (og_website_name === website_name) {
+      const newPasswordHash = await hash(newPassword, 12);
+      myUser.password = newPasswordHash;
+      await user.save(myUser);
+      res.json({ done: true });
+    } else {
+      throw new Error("Incorrect Password");
+    }
+  } catch (err) {
+    console.log("My Error: " + err);
+    res.json({ done: false, err: err });
+  }
+});
+
 // Reset Password
 router.post("/reset", async (req: Request, res: Response) => {
   try {

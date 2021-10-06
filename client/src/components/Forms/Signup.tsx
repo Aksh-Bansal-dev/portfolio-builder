@@ -87,11 +87,18 @@ const validSchema = yup.object({
     .string()
     .required()
     .max(64)
-    .matches(/^[a-zA-Z0-9]+(@[a-zA-Z0-9]+\.[a-z]+)$/, "Invalid Email"),
+    .matches(/^[a-zA-Z0-9]+(@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)$/, "Invalid Email"),
   password: yup
     .string()
     .min(6)
     .matches(/[0-9]/, "Password must include atleast 1 digit"),
+  website_name: yup
+    .string()
+    .min(3)
+    .matches(
+      /^[a-zA-Z0-9\_\-]+$/,
+      "website name can only contains alphanumeric letters"
+    ),
 });
 
 const Signup: React.FC<SignupProps> = ({ setPage }) => {

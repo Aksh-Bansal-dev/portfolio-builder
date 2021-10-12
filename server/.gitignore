@@ -5,6 +5,7 @@ build/
 tmp/
 temp/
 .env
+.env.prod
 images/*
 
 !images/template*

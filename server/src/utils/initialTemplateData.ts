@@ -18,6 +18,21 @@ export const initialTemplateData = async (): Promise<void> => {
           template_name: "template1",
           display_picture: "/images/template1.png",
         },
+        {
+          creator: "Himanshu",
+          template_name: "template2",
+          display_picture: "/images/template2.png",
+        },
+        {
+          creator: "Himanshu",
+          template_name: "template3",
+          display_picture: "/images/template3.png",
+        },
+        {
+          creator: "Jatin",
+          template_name: "template4",
+          display_picture: "/images/template4.png",
+        },
       ])
       .execute();
   }

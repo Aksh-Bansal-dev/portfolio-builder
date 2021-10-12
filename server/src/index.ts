@@ -32,6 +32,7 @@ createConnection()
     app.set("view engine", "ejs");
     app.use("/web", webRoutes);
 
+    // Initial DB data
     initialTemplateData();
 
     // Routes

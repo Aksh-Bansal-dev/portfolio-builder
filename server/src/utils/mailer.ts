@@ -28,7 +28,7 @@ export const mailer = async (
     subject: "Please confirm your Email account", // Subject line
     html:
       `Hello ${username},<br> We're happy you signed up for Portfolio Builder.
-      To start exploring our website and our templates, please confirm your email addresss.<br><a href=` +
+      To start exploring our website, please confirm your email address.<br><a href=` +
       confirmationLink +
       ">Click here to verify</a><br>Thank You,<br>Portfolio Builder Team", // html body
   });

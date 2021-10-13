@@ -4,11 +4,13 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from "typeorm";
 import { Education } from "./Education";
 import { MyInfo } from "./MyInfo";
 import { Project } from "./Project";
 import { Template } from "./Template";
+import { Verified } from "./Verified";
 
 @Entity()
 export class User {
@@ -48,6 +50,9 @@ export class User {
 
   @OneToMany(() => MyInfo, (info) => info.user, { cascade: true })
   info: MyInfo[];
+
+  @OneToOne(() => Verified, (verified) => verified.user, { cascade: true })
+  verified: Verified;
 
   @Column({
     default: "https://linkedin.com",

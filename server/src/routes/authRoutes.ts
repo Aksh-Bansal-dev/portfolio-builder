@@ -7,6 +7,8 @@ import authValidation from "../middleware/authValidation";
 import path from "path";
 import { v4 as uuid } from "uuid";
 import fs from "fs";
+import { Verified } from "../entity/Verified";
+import { mailer } from "../utils/mailer";
 
 const router = Router();
 
@@ -19,6 +21,13 @@ router.post("/login", async (req: Request, res: Response) => {
     const gotUser = await user.findOne({ email: email });
     if (!gotUser) {
       throw new Error("User not found");
+    }
+    const verUser = await getRepository(Verified).findOne({
+      user: gotUser,
+    });
+    if (!verUser || !verUser?.status) {
+      res.json({ done: false, err: "Please verify your email" });
+      return;
     }
 
     const correctPass = gotUser.password;
@@ -126,6 +135,7 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
       education: education,
       projects: projects,
       info: info,
+      verified: existingUser.verified,
       linkedin_profile: linkedin_profile,
       github_profile: github_profile,
       codechef_profile: codechef_profile,
@@ -144,6 +154,7 @@ router.post("/update", authValidation, async (req: Request, res: Response) => {
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const user = getRepository(User);
+    const verified = getRepository(Verified);
 
     const {
       username,
@@ -168,18 +179,46 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
+    // Unique email check
     const existingEmail = await user.findOne({ email: email });
     if (existingEmail) {
       res.json({ done: false, err: "Email already exists" });
       return;
     }
+
+    // Valid website name check
     const existingWebsite = await user.findOne({ website_name });
     if (existingWebsite) {
       res.json({ done: false, err: "Website already exists" });
       return;
     }
+
+    // Verification email
+    let verificationCode = uuid();
+    const allVerified = await verified.find();
+    while (true) {
+      for (let i = 0; i < allVerified.length; i++) {
+        if (allVerified[i].confirmation_url === verificationCode) {
+          verificationCode = uuid();
+          continue;
+        }
+      }
+      break;
+    }
+    mailer(
+      email,
+      `${process.env.SERVER_URL}/auth/verify/${verificationCode}`,
+      username
+    );
+    const verifiedObj = {
+      confirmation_url: verificationCode,
+      status: false,
+    };
+
+    // Password
     const hashedPassword = await hash(password, 12);
 
+    // Profile image
     let profile_image: string | undefined;
     if (req.files && req.files.profile_image) {
       const location = path.join(process.cwd(), "images");
@@ -211,6 +250,7 @@ router.post("/register", async (req: Request, res: Response) => {
       education,
       info,
       projects,
+      verified: verifiedObj,
       linkedin_profile,
       github_profile,
       codechef_profile,
@@ -218,10 +258,34 @@ router.post("/register", async (req: Request, res: Response) => {
     };
 
     await user.save(newUser);
-    res.status(200).json({ done: "true" });
+    res.status(200).json({ done: true });
   } catch (err) {
     console.log("my error: " + err);
     res.json({ done: false, error: "Something went wrong" });
+  }
+});
+
+// Verify emails
+router.get("/verify/:code", async (req: Request, res: Response) => {
+  try {
+    const confirmationCode = req.params.code;
+    const verified = getRepository(Verified);
+    const verUser = await verified.findOne({
+      confirmation_url: confirmationCode,
+    });
+    if (!verUser) {
+      res.send("Bad URL");
+      return;
+    }
+    const newVer = {
+      ...verUser,
+      status: true,
+    };
+    verified.save(newVer);
+    res.redirect(process.env.CLIENT_URL! + "/login");
+  } catch (err) {
+    console.log(err);
+    res.json({ done: false });
   }
 });
 

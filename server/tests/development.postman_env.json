@@ -1,0 +1,14 @@
+{
+	"id": "fee9e809-6118-4b91-8aff-16fa251cbe54",
+	"name": "development",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-10-14T07:08:56.389Z",
+	"_postman_exported_using": "Postman/8.11.1"
+}

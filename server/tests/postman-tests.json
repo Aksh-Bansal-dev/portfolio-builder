@@ -1,0 +1,584 @@
+{
+	"info": {
+		"_postman_id": "688815ce-6924-48a3-be82-5e4420d64c20",
+		"name": "portfolio builder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login fail\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"password\": \"testuser12@email.com\",\n    \"email\": \"testuser12@email.com\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login Success\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"    pm.expect(response.accessToken).to.exist;",
+							"",
+							"    pm.globals.set(\"accessToken\", response.accessToken);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n \"password\": \"kakashi6@hatake.com\",\n    \"email\": \"kakashi6@hatake.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "link user to a template",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"link user to template\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"template_name\": \"template1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/user/template",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"template"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user data using access token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get user data using accessToken\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"",
+							"    pm.globals.set(\"website_name\", response.data.website_name);",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/everything",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"everything"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user data using website_name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get user data using website_name\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/data/{{website_name}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"data",
+						"{{website_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get website name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get user data using website_name\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"    pm.expect(response.data.website_name).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.globals.clear(\"accessToken\");",
+							"pm.globals.clear(\"website_name\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/website_name",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"website_name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fail user data using accessToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"fail getting user data using accessToken\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(false);",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/everything",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"everything"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fail user data using website_name Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"fail getting user data using website_name\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(false);",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/user/data/{{website_name}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"data",
+						"{{website_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "template1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/web/template/template1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"web",
+						"template",
+						"template1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "template2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/web/template/template2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"web",
+						"template",
+						"template2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "template3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/web/template/template3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"web",
+						"template",
+						"template3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "template4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/web/template/template4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"web",
+						"template",
+						"template4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all templates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get all templates\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.response.to.have.body();",
+							"    pm.expect(response.done).to.eql(true);",
+							"    pm.expect(response.data.length).to.gte(1);",
+							"});",
+							"",
+							"postman.setNextRequest(null);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/template/all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"template",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"testuser12\",\n    \"password\": \"testuser12@email.com\",\n    \"email\": \"testuser12@email.com\",\n    \"website_name\": \"test12\",\n    \"about\": \"this is my story\",\n    \"education\": [\n        {\n            \"degree\": \"btech\",\n            \"title\": \"IIIT\",\n            \"score\": \"10\",\n            \"graduation_year\": \"2020\"\n        }\n    ],\n    \"projects\": [\n        {\n            \"date\": \"today\",\n            \"title\": \"portfolio\",\n            \"description\": \"this is business\"\n        }\n    ],\n    \"info\":[\n        {\n            \"year\": \"2020\",\n            \"title\": \"achive\",\n            \"description\": \"somethig big\"\n        }\n    ], \n    \"linkedin_profile\": \"llinklllllld\",\n    \"github_profile\": \"github\",\n    \"codeforces_profile\": \"cocdeforces\",\n    \"codechef_profile\": \"codeforce is best\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2MzAyMjc5OTQsImV4cCI6MTYzMDMxNDM5NH0.CszrJ_bSVputCgRNUhKGkdAQAhDDnFfQC2ZYAoW6rhg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"testuser11\",\n    \"password\": \"testuser11@email.com\",\n    \"email\": \"testuser11@email.com\",\n    \"website_name\": \"test11\",\n    \"about\": \"this is my story\",\n    \"education\": [\n        {\n            \"degree\": \"btech\",\n            \"title\": \"IIIT\",\n            \"score\": \"10\",\n            \"graduation_year\": \"2020\"\n        }\n    ],\n    \"projects\": [\n        {\n            \"date\": \"today\",\n            \"title\": \"portfolio\",\n            \"description\": \"this is business\"\n        }\n    ],\n    \"info\":[\n        {\n            \"year\": \"2020\",\n            \"title\": \"achive\",\n            \"description\": \"somethig big\"\n        }\n    ], \n    \"linkedin_profile\": \"llinklllllld\",\n    \"github_profile\": \"github\",\n    \"codeforces_profile\": \"cocdeforces\",\n    \"codechef_profile\": \"codeforce is best\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/update",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

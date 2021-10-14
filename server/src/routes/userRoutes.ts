@@ -6,7 +6,7 @@ import { Template } from "../entity/Template";
 
 const router = Router();
 
-// Get all info about the user except the profile image using token
+// Get all info about the user using token
 router.get("/everything", async (req: Request, res: Response) => {
   try {
     const user = getRepository(User);
@@ -67,7 +67,7 @@ router.get("/everything", async (req: Request, res: Response) => {
   }
 });
 
-// Get all info about the user except the profile image using website_name
+// Get all info about the user using website_name
 router.get("/data/:website", async (req: Request, res: Response) => {
   try {
     const user = getRepository(User);

@@ -44,3 +44,9 @@ Run `docker-compose up` to start the entire application
 - Express (server)
 - Nextjs (client framework)
 - Docker
+
+## How to test
+
+- Run `cd server` to move into server directory.
+- Run `npm run dev` to start server.
+- Run `npm run test` to test the server.

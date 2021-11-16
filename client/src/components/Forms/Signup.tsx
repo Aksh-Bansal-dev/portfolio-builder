@@ -87,7 +87,10 @@ const validSchema = yup.object({
     .string()
     .required()
     .max(64)
-    .matches(/^[a-zA-Z0-9]+(@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)$/, "Invalid Email"),
+    .matches(
+      /^[a-zA-Z0-9\.]+(@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+)$/,
+      "Invalid Email"
+    ),
   password: yup
     .string()
     .min(6)
